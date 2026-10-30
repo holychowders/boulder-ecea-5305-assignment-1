@@ -14,7 +14,64 @@
 
 #!/bin/sh
 
+set -e
+
+writefile="$1"
+writestr="$2"
+argcount=$#
+
 main() {
+    handle_args
+
+    # Create the containing path for WRITEFILE
+    local containing_path="${writefile%/*}"
+    [ "$containing_path" = "$writefile" ] && containing_path='.'
+    if ! mkdir -p "$containing_path"; then
+        printf '%s\n' "Error: WRITEFILE containing path could not be created: $containing_path"
+        exit 1
+    fi
+
+    # Write WRITESTR into WRITEFILE
+    if ! echo "$writestr" > "$writefile"; then
+        printf '%s\n' "Error: WRITESTR '$writestr' could not be written into WRITEFILE '$writefile'"
+        exit 1
+    fi
+}
+
+handle_args() {
+    if [ $argcount -eq 0 ]; then
+        print_usage
+        exit 0
+    elif [ ! $argcount -eq 2 ]; then
+        echo 'Error: This program takes two arguments (or zero for usage info)'
+        print_usage
+        exit 1
+    fi
+
+    if [ -z "$writefile" ]; then
+        echo 'Error: WRITEFILE not specified'
+        print_usage
+        exit 1
+    fi
+
+    if [ -z "$writestr" ]; then
+        echo 'Error: WRITESTR not specified'
+        print_usage
+        exit 1
+    fi
+}
+
+print_usage() {
+    echo 'Usage:'
+    printf '%s\n' "  $0 WRITEFILE WRITESTR"
+
+    echo 'Description:'
+    echo '  Create a new file WRITEFILE containing WRITESTR'
+    echo '  If the file already exists, it will be overwritten'
+
+    echo 'Required Arguments:'
+    echo '  WRITEFILE: Path of file to create'
+    echo '  WRITESTR : String to write into new file'
 }
 
 main
