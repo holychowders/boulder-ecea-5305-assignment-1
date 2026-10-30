@@ -22,8 +22,9 @@ main() {
     local filecount=$(find "$filesdir" -type f | wc -l)
     local matchcount=$(grep -ir "$searchstr" "$filesdir" | wc -l)
 
-    printf '%s\n' "Files: $filecount"
-    printf '%s\n' "Matches: $matchcount"
+    #printf '%s\n' "Files: $filecount"
+    #printf '%s\n' "Matches: $matchcount"
+    printf '%s\n' "The number of files are $filecount and the number of matching lines are $matchcount"
 }
 
 handle_args() {

@@ -39,11 +39,8 @@ main() {
 }
 
 handle_args() {
-    if [ $argcount -eq 0 ]; then
-        print_usage
-        exit 0
-    elif [ ! $argcount -eq 2 ]; then
-        echo 'Error: This program takes two arguments (or zero for usage info)'
+    if [ ! $argcount -eq 2 ]; then
+        echo 'Error: This program takes two arguments'
         print_usage
         exit 1
     fi
